@@ -105,8 +105,7 @@ const animate = () => {
   const intersects = raycaster.intersectObjects(scene.children);
 
   const topDowntarget = material.uniforms.uTopDown;
-  let speed = material.uniforms.uSpeed;
-  let dispHandle = material.uniforms.uDispHandle;
+  const dispHandle = material.uniforms.uDispHandle;
 
   if (intersects.length === 1 && intersects[0].object.name === 'picture') {
 
@@ -120,7 +119,6 @@ const animate = () => {
   
       if(firstflag){
         gsap.to(topDowntarget,{value:-0.403,duration:1,ease:"power1.out"})
-        gsap.to(speed,{value: 2.3 ,duration:1})
         gsap.to(dispHandle,{value: 4.5 ,duration:1.9, delay:0.8})
         firstflag = false;
       }
@@ -129,7 +127,6 @@ const animate = () => {
   
     firstflag = true;
     gsap.to(topDowntarget,{value:-1.0,duration:1,ease:"power1.out",onComplete:()=>{material.uniforms.uTime.value = START_TIME}})
-    gsap.to(speed,{value: 2.6 ,duration:1})
     gsap.to(dispHandle,{value: -2 ,duration:1})
 
     startTime = Date.now();
