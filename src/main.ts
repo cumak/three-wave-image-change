@@ -52,10 +52,10 @@ const material = new THREE.ShaderMaterial({
     uWaveLength: { value: 0.082 },   
     uFreqency2: { value: 1.13 },   
     uWaveLength2: { value: 0.674 },
-    topDown: { value: -0.403 },    
-    speed: { value: 2.3 },         
-    z: { value: 7.31 },
-    dispHandle: { value: -2 },
+    uTopDown: { value: -0.403 },    
+    uSpeed: { value: 2.3 },         
+    uPosAddZ: { value: 7.31 },
+    uDispHandle: { value: -2 },
   }
 });
 
@@ -86,7 +86,6 @@ const resizeRenderer = () => {
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
 
-
   renderer.setSize(sizes.width, sizes.height);
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -107,9 +106,9 @@ const animate = () => {
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(scene.children);
 
-  const topDowntarget = material.uniforms.topDown;
-  let speed = material.uniforms.speed;
-  let dispHandle = material.uniforms.dispHandle;
+  const topDowntarget = material.uniforms.uTopDown;
+  let speed = material.uniforms.uSpeed;
+  let dispHandle = material.uniforms.uDispHandle;
 
 
   if (intersects.length === 1) {
@@ -192,25 +191,25 @@ gui
 
   .name("uWaveLength2");
 gui
-.add(material.uniforms.topDown,"value")
+.add(material.uniforms.uTopDown,"value")
 .min(-1)
 .max(0)
-.name("topDown");
+.name("uTopDown");
 gui
-  .add(material.uniforms.speed, "value")
+  .add(material.uniforms.uSpeed, "value")
   .min(0)
   .max(3.5)
 
-  .name("speed");
+  .name("uSpeed");
 gui
-  .add(material.uniforms.z, "value")
+  .add(material.uniforms.uPosAddZ, "value")
   .min(0)
   .max(10)
-  .name("z");
+  .name("uPosAddZ");
 gui
-  .add(material.uniforms.dispHandle, "value")
+  .add(material.uniforms.uDispHandle, "value")
   .min(-2)
   .max(5)
-  .name("dispHandle");
+  .name("uDispHandle");
 
 gui.show(false)
