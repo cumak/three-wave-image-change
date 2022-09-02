@@ -61,6 +61,7 @@ const material = new THREE.ShaderMaterial({
 
 
 const mesh = new THREE.Mesh(geometry, material);
+mesh.name = 'picture';
 scene.add(mesh);
 
 
@@ -98,9 +99,6 @@ let startTime = Date.now();
 
 let firstflag = true;
 
-/**
- * Animate
- */
 const animate = () => {
 
   raycaster.setFromCamera(mouse, camera);
@@ -110,25 +108,23 @@ const animate = () => {
   let speed = material.uniforms.uSpeed;
   let dispHandle = material.uniforms.uDispHandle;
 
+  if (intersects.length === 1 && intersects[0].object.name === 'picture') {
 
-  if (intersects.length === 1) {
+      const time = (Date.now() - startTime) / 1000 - START_TIME;
+      const maxTime = 1.4;
+      if((Date.now() - startTime) / 1000 - START_TIME > maxTime){
+        material.uniforms.uTime.value = maxTime;
+      }else{
+        material.uniforms.uTime.value = time;
+      }
   
-    const time = (Date.now() - startTime) / 1000 - START_TIME;
-    const maxTime = 1.4;
-    if((Date.now() - startTime) / 1000 - START_TIME > maxTime){
-      material.uniforms.uTime.value = maxTime;
-    }else{
-      material.uniforms.uTime.value = time;
-    }
-
-    if(firstflag){
+      if(firstflag){
+        gsap.to(topDowntarget,{value:-0.403,duration:1,ease:"power1.out"})
+        gsap.to(speed,{value: 2.3 ,duration:1})
+        gsap.to(dispHandle,{value: 4.5 ,duration:1.9, delay:0.8})
+        firstflag = false;
+      }
     
-      gsap.to(topDowntarget,{value:-0.403,duration:1,ease:"power1.out"})
-      gsap.to(speed,{value: 2.3 ,duration:1})
-      gsap.to(dispHandle,{value: 4.5 ,duration:1.9, delay:0.8})
-      firstflag = false;
-    }
-
   } else {
   
     firstflag = true;
@@ -138,7 +134,7 @@ const animate = () => {
 
     startTime = Date.now();
   }
-
+  
   renderer.render(scene, camera);
   controls.update();
 
@@ -170,46 +166,41 @@ gui
   .add(material.uniforms.uFreqency, "value")
   .min(0)
   .max(50)
-
   .name("uFreqency");
 gui
   .add(material.uniforms.uWaveLength, "value")
   .min(0)
   .max(2)
-
   .name("uWaveLength");
 gui
   .add(material.uniforms.uFreqency2, "value")
   .min(0)
   .max(10)
-
   .name("uFreqency2");
 gui
   .add(material.uniforms.uWaveLength2, "value")
   .min(0)
   .max(2)
-
   .name("uWaveLength2");
-gui
-.add(material.uniforms.uTopDown,"value")
-.min(-1)
-.max(0)
-.name("uTopDown");
-gui
-  .add(material.uniforms.uSpeed, "value")
-  .min(0)
-  .max(3.5)
+// gui
+// .add(material.uniforms.uTopDown,"value")
+// .min(-1)
+// .max(0)
+// .name("uTopDown");
+// gui
+//   .add(material.uniforms.uSpeed, "value")
+//   .min(0)
+//   .max(3.5)
+//   .name("uSpeed");
+// gui
+//   .add(material.uniforms.uPosAddZ, "value")
+//   .min(0)
+//   .max(10)
+//   .name("uPosAddZ");
+// gui
+//   .add(material.uniforms.uDispHandle, "value")
+//   .min(-2)
+//   .max(5)
+//   .name("uDispHandle");
 
-  .name("uSpeed");
-gui
-  .add(material.uniforms.uPosAddZ, "value")
-  .min(0)
-  .max(10)
-  .name("uPosAddZ");
-gui
-  .add(material.uniforms.uDispHandle, "value")
-  .min(-2)
-  .max(5)
-  .name("uDispHandle");
-
-gui.show(false)
+// gui.show(false)
